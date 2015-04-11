@@ -3,8 +3,6 @@ package com.bignerdranch.android.criminalintent;
 import java.util.Date;
 import java.util.UUID;
 
-import com.bignerdranch.android.criminalintent.CrimeListFragment.Callbacks;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -48,24 +46,23 @@ public class CrimeFragment extends Fragment {
     ImageButton mPhotoButton;
     ImageView mPhotoView;
     Button mSuspectButton;
-    private Callbacks mCallbacks;
+    Callbacks mCallbacks;
 
     public interface Callbacks {
-    	void onCrimeUpdated(Crime crime);
+        void onCrimeUpdated(Crime crime);
     }
-    
-    @Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		
-		mCallbacks = (Callbacks)getActivity();
-	}
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mCallbacks = null;
-	}
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks)activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -95,7 +92,7 @@ public class CrimeFragment extends Fragment {
     @TargetApi(11)
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_crime, parent, false);
-  
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         }
